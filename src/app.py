@@ -10,9 +10,8 @@ model_name="gemini-1.0-pro")
 convo = model.start_chat(history=[]) 
 #Reading the whatsapp chatfile
 
-def text_extraction(path):
-    with open(path, "r", encoding="utf-8", errors="ignore") as file:
-        text = file.read()
+def text_extraction(uploaded_file):
+        text = uploaded_file.read().decode('utf-8')
         return text
 
 
@@ -27,9 +26,12 @@ def tuning_response(text):
     response=str(convo.last.text)
     return response
 st.title("Whatsapp Chat Summerizer")
-path=st.text_input("Provide the Path of File: ") 
-if path:
-    coversation=text_extraction(path)
+#uploaded_file=st.text_input("Provide the uploaded_file of File: ") 
+uploaded_file = st.file_uploader("Uplaod File :")
+st.write("Note : Application may not accurate with Non-English conversation.")
+if uploaded_file:
+    coversation=text_extraction(uploaded_file)
+    #print(coversation)
     summary=tuning_response(coversation)
     st.markdown("## Conversation Summary")
     st.write(summary)
